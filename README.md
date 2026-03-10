@@ -49,6 +49,55 @@
     npm run inspect
     ```
 
+    ## Using with Claude Desktop
+
+    1. Open your Claude Desktop config file:
+       - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+       - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+    2. Add the Zendesk MCP server to the `mcpServers` section:
+       ```json
+       {
+         "mcpServers": {
+           "zendesk": {
+             "command": "node",
+             "args": ["/path/to/zendesk-mcp-server/src/index.js"],
+             "env": {
+               "ZENDESK_SUBDOMAIN": "your-subdomain",
+               "ZENDESK_EMAIL": "your-email@example.com",
+               "ZENDESK_API_TOKEN": "your-api-token"
+             }
+           }
+         }
+       }
+       ```
+
+    3. Replace `/path/to/zendesk-mcp-server` with the absolute path to where you cloned this repo.
+
+    4. Restart Claude Desktop. You should see the Zendesk tools available in your conversation.
+
+    ## Using with Claude Code
+
+    Add the server to your Claude Code MCP settings (`~/.claude/settings.json`):
+
+    ```json
+    {
+      "mcpServers": {
+        "zendesk": {
+          "command": "node",
+          "args": ["/path/to/zendesk-mcp-server/src/index.js"],
+          "env": {
+            "ZENDESK_SUBDOMAIN": "your-subdomain",
+            "ZENDESK_EMAIL": "your-email@example.com",
+            "ZENDESK_API_TOKEN": "your-api-token"
+          }
+        }
+      }
+    }
+    ```
+
+    Alternatively, pass credentials via a `.env` file in the repo root instead of the `env` block — the server will load it automatically.
+
     ## Available Tools
 
     ### Tickets
