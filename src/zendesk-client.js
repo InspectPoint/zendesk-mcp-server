@@ -70,6 +70,10 @@ import axios from 'axios';
         return this.request('DELETE', `/tickets/${id}.json`);
       }
 
+      async getTicketComments(id, params) {
+        return this.request('GET', `/tickets/${id}/comments.json`, null, params);
+      }
+
       // Users
       async listUsers(params) {
         return this.request('GET', '/users.json', null, params);
@@ -254,4 +258,13 @@ import axios from 'axios';
       }
     }
 
-    export const zendeskClient = new ZendeskClient();
+    let instance;
+
+    export const zendeskClient = new Proxy({}, {
+      get(target, prop) {
+        if (!instance) {
+          instance = new ZendeskClient();
+        }
+        return instance[prop];
+      }
+    });

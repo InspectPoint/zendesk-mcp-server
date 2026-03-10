@@ -138,6 +138,31 @@ import { z } from 'zod';
         }
       },
       {
+        name: "get_ticket_comments",
+        description: "Get all comments (and attachment metadata) for a ticket",
+        schema: {
+          id: z.number().describe("Ticket ID"),
+          page: z.number().optional().describe("Page number for pagination"),
+          per_page: z.number().optional().describe("Number of comments per page (max 100)")
+        },
+        handler: async ({ id, page, per_page }) => {
+          try {
+            const result = await zendeskClient.getTicketComments(id, { page, per_page });
+            return {
+              content: [{
+                type: "text",
+                text: JSON.stringify(result, null, 2)
+              }]
+            };
+          } catch (error) {
+            return {
+              content: [{ type: "text", text: `Error getting ticket comments: ${error.message}` }],
+              isError: true
+            };
+          }
+        }
+      },
+      {
         name: "delete_ticket",
         description: "Delete a ticket",
         schema: {

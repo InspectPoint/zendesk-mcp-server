@@ -54,6 +54,7 @@
     ### Tickets
     - `list_tickets`: List tickets in Zendesk
     - `get_ticket`: Get a specific ticket by ID
+    - `get_ticket_comments`: Get all comments (and attachment metadata) for a ticket
     - `create_ticket`: Create a new ticket
     - `update_ticket`: Update an existing ticket
     - `delete_ticket`: Delete a ticket
