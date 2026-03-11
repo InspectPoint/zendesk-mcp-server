@@ -102,6 +102,7 @@ import { z } from 'zod';
           id: z.number().describe("Ticket ID to update"),
           subject: z.string().optional().describe("Updated ticket subject"),
           comment: z.string().optional().describe("New comment to add"),
+          internal: z.boolean().optional().describe("If true, post comment as internal note (not visible to requester)"),
           priority: z.enum(["urgent", "high", "normal", "low"]).optional().describe("Updated ticket priority"),
           status: z.enum(["new", "open", "pending", "hold", "solved", "closed"]).optional().describe("Updated ticket status"),
           assignee_id: z.number().optional().describe("User ID of the new assignee"),
@@ -109,12 +110,12 @@ import { z } from 'zod';
           type: z.enum(["problem", "incident", "question", "task"]).optional().describe("Updated ticket type"),
           tags: z.array(z.string()).optional().describe("Updated tags for the ticket")
         },
-        handler: async ({ id, subject, comment, priority, status, assignee_id, group_id, type, tags }) => {
+        handler: async ({ id, subject, comment, internal, priority, status, assignee_id, group_id, type, tags }) => {
           try {
             const ticketData = {};
-            
+
             if (subject !== undefined) ticketData.subject = subject;
-            if (comment !== undefined) ticketData.comment = { body: comment };
+            if (comment !== undefined) ticketData.comment = { body: comment, public: internal ? false : true };
             if (priority !== undefined) ticketData.priority = priority;
             if (status !== undefined) ticketData.status = status;
             if (assignee_id !== undefined) ticketData.assignee_id = assignee_id;
