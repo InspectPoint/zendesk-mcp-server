@@ -108,9 +108,10 @@ import { z } from 'zod';
           assignee_id: z.number().optional().describe("User ID of the new assignee"),
           group_id: z.number().optional().describe("New group ID for the ticket"),
           type: z.enum(["problem", "incident", "question", "task"]).optional().describe("Updated ticket type"),
-          tags: z.array(z.string()).optional().describe("Updated tags for the ticket")
+          tags: z.array(z.string()).optional().describe("Updated tags for the ticket"),
+          collaborator_ids: z.array(z.number()).optional().describe("Array of user IDs to add as CC/collaborators on the ticket")
         },
-        handler: async ({ id, subject, comment, internal, priority, status, assignee_id, group_id, type, tags }) => {
+        handler: async ({ id, subject, comment, internal, priority, status, assignee_id, group_id, type, tags, collaborator_ids }) => {
           try {
             const ticketData = {};
 
@@ -122,6 +123,7 @@ import { z } from 'zod';
             if (group_id !== undefined) ticketData.group_id = group_id;
             if (type !== undefined) ticketData.type = type;
             if (tags !== undefined) ticketData.tags = tags;
+            if (collaborator_ids !== undefined) ticketData.collaborator_ids = collaborator_ids;
             
             const result = await zendeskClient.updateTicket(id, ticketData);
             return {
@@ -149,10 +151,17 @@ import { z } from 'zod';
         handler: async ({ id, page, per_page }) => {
           try {
             const result = await zendeskClient.getTicketComments(id, { page, per_page });
+            const slim = (result.comments || []).map(c => ({
+              id: c.id,
+              author_id: c.author_id,
+              public: c.public,
+              created_at: c.created_at,
+              body: c.body
+            }));
             return {
               content: [{
                 type: "text",
-                text: JSON.stringify(result, null, 2)
+                text: JSON.stringify({ comments: slim, count: slim.length }, null, 2)
               }]
             };
           } catch (error) {
