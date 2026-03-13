@@ -6,8 +6,8 @@ import { z } from 'zod';
         name: "list_tickets",
         description: "List tickets in Zendesk",
         schema: {
-          page: z.number().optional().describe("Page number for pagination"),
-          per_page: z.number().optional().describe("Number of tickets per page (max 100)"),
+          page: z.coerce.number().optional().describe("Page number for pagination"),
+          per_page: z.coerce.number().optional().describe("Number of tickets per page (max 100)"),
           sort_by: z.string().optional().describe("Field to sort by"),
           sort_order: z.enum(["asc", "desc"]).optional().describe("Sort order (asc or desc)")
         },
@@ -33,7 +33,7 @@ import { z } from 'zod';
         name: "get_ticket",
         description: "Get a specific ticket by ID",
         schema: {
-          id: z.number().describe("Ticket ID")
+          id: z.coerce.number().describe("Ticket ID")
         },
         handler: async ({ id }) => {
           try {
@@ -60,9 +60,9 @@ import { z } from 'zod';
           comment: z.string().describe("Ticket comment/description"),
           priority: z.enum(["urgent", "high", "normal", "low"]).optional().describe("Ticket priority"),
           status: z.enum(["new", "open", "pending", "hold", "solved", "closed"]).optional().describe("Ticket status"),
-          requester_id: z.number().optional().describe("User ID of the requester"),
-          assignee_id: z.number().optional().describe("User ID of the assignee"),
-          group_id: z.number().optional().describe("Group ID for the ticket"),
+          requester_id: z.coerce.number().optional().describe("User ID of the requester"),
+          assignee_id: z.coerce.number().optional().describe("User ID of the assignee"),
+          group_id: z.coerce.number().optional().describe("Group ID for the ticket"),
           type: z.enum(["problem", "incident", "question", "task"]).optional().describe("Ticket type"),
           tags: z.array(z.string()).optional().describe("Tags for the ticket")
         },
@@ -99,17 +99,17 @@ import { z } from 'zod';
         name: "update_ticket",
         description: "Update an existing ticket",
         schema: {
-          id: z.number().describe("Ticket ID to update"),
+          id: z.coerce.number().describe("Ticket ID to update"),
           subject: z.string().optional().describe("Updated ticket subject"),
           comment: z.string().optional().describe("New comment to add"),
           internal: z.boolean().optional().describe("If true, post comment as internal note (not visible to requester)"),
           priority: z.enum(["urgent", "high", "normal", "low"]).optional().describe("Updated ticket priority"),
           status: z.enum(["new", "open", "pending", "hold", "solved", "closed"]).optional().describe("Updated ticket status"),
-          assignee_id: z.number().optional().describe("User ID of the new assignee"),
-          group_id: z.number().optional().describe("New group ID for the ticket"),
+          assignee_id: z.coerce.number().optional().describe("User ID of the new assignee"),
+          group_id: z.coerce.number().optional().describe("New group ID for the ticket"),
           type: z.enum(["problem", "incident", "question", "task"]).optional().describe("Updated ticket type"),
           tags: z.array(z.string()).optional().describe("Updated tags for the ticket"),
-          collaborator_ids: z.array(z.number()).optional().describe("Array of user IDs to add as CC/collaborators on the ticket")
+          collaborator_ids: z.array(z.coerce.number()).optional().describe("Array of user IDs to add as CC/collaborators on the ticket")
         },
         handler: async ({ id, subject, comment, internal, priority, status, assignee_id, group_id, type, tags, collaborator_ids }) => {
           try {
@@ -144,9 +144,9 @@ import { z } from 'zod';
         name: "get_ticket_comments",
         description: "Get all comments (and attachment metadata) for a ticket",
         schema: {
-          id: z.number().describe("Ticket ID"),
-          page: z.number().optional().describe("Page number for pagination"),
-          per_page: z.number().optional().describe("Number of comments per page (max 100)")
+          id: z.coerce.number().describe("Ticket ID"),
+          page: z.coerce.number().optional().describe("Page number for pagination"),
+          per_page: z.coerce.number().optional().describe("Number of comments per page (max 100)")
         },
         handler: async ({ id, page, per_page }) => {
           try {
@@ -176,7 +176,7 @@ import { z } from 'zod';
         name: "delete_ticket",
         description: "Delete a ticket",
         schema: {
-          id: z.number().describe("Ticket ID to delete")
+          id: z.coerce.number().describe("Ticket ID to delete")
         },
         handler: async ({ id }) => {
           try {

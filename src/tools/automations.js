@@ -6,8 +6,8 @@ import { z } from 'zod';
         name: "list_automations",
         description: "List automations in Zendesk",
         schema: {
-          page: z.number().optional().describe("Page number for pagination"),
-          per_page: z.number().optional().describe("Number of automations per page (max 100)")
+          page: z.coerce.number().optional().describe("Page number for pagination"),
+          per_page: z.coerce.number().optional().describe("Number of automations per page (max 100)")
         },
         handler: async ({ page, per_page }) => {
           try {
@@ -31,7 +31,7 @@ import { z } from 'zod';
         name: "get_automation",
         description: "Get a specific automation by ID",
         schema: {
-          id: z.number().describe("Automation ID")
+          id: z.coerce.number().describe("Automation ID")
         },
         handler: async ({ id }) => {
           try {
@@ -101,7 +101,7 @@ import { z } from 'zod';
         name: "update_automation",
         description: "Update an existing automation",
         schema: {
-          id: z.number().describe("Automation ID to update"),
+          id: z.coerce.number().describe("Automation ID to update"),
           title: z.string().optional().describe("Updated automation title"),
           description: z.string().optional().describe("Updated automation description"),
           conditions: z.object({
@@ -149,7 +149,7 @@ import { z } from 'zod';
         name: "delete_automation",
         description: "Delete an automation",
         schema: {
-          id: z.number().describe("Automation ID to delete")
+          id: z.coerce.number().describe("Automation ID to delete")
         },
         handler: async ({ id }) => {
           try {

@@ -6,8 +6,8 @@ import { z } from 'zod';
         name: "list_triggers",
         description: "List triggers in Zendesk",
         schema: {
-          page: z.number().optional().describe("Page number for pagination"),
-          per_page: z.number().optional().describe("Number of triggers per page (max 100)")
+          page: z.coerce.number().optional().describe("Page number for pagination"),
+          per_page: z.coerce.number().optional().describe("Number of triggers per page (max 100)")
         },
         handler: async ({ page, per_page }) => {
           try {
@@ -31,7 +31,7 @@ import { z } from 'zod';
         name: "get_trigger",
         description: "Get a specific trigger by ID",
         schema: {
-          id: z.number().describe("Trigger ID")
+          id: z.coerce.number().describe("Trigger ID")
         },
         handler: async ({ id }) => {
           try {
@@ -101,7 +101,7 @@ import { z } from 'zod';
         name: "update_trigger",
         description: "Update an existing trigger",
         schema: {
-          id: z.number().describe("Trigger ID to update"),
+          id: z.coerce.number().describe("Trigger ID to update"),
           title: z.string().optional().describe("Updated trigger title"),
           description: z.string().optional().describe("Updated trigger description"),
           conditions: z.object({
@@ -149,7 +149,7 @@ import { z } from 'zod';
         name: "delete_trigger",
         description: "Delete a trigger",
         schema: {
-          id: z.number().describe("Trigger ID to delete")
+          id: z.coerce.number().describe("Trigger ID to delete")
         },
         handler: async ({ id }) => {
           try {

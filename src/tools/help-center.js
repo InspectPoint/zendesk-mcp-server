@@ -6,8 +6,8 @@ import { z } from 'zod';
         name: "list_articles",
         description: "List Help Center articles",
         schema: {
-          page: z.number().optional().describe("Page number for pagination"),
-          per_page: z.number().optional().describe("Number of articles per page (max 100)"),
+          page: z.coerce.number().optional().describe("Page number for pagination"),
+          per_page: z.coerce.number().optional().describe("Number of articles per page (max 100)"),
           sort_by: z.string().optional().describe("Field to sort by"),
           sort_order: z.enum(["asc", "desc"]).optional().describe("Sort order (asc or desc)")
         },
@@ -33,7 +33,7 @@ import { z } from 'zod';
         name: "get_article",
         description: "Get a specific Help Center article by ID",
         schema: {
-          id: z.number().describe("Article ID")
+          id: z.coerce.number().describe("Article ID")
         },
         handler: async ({ id }) => {
           try {
@@ -58,11 +58,11 @@ import { z } from 'zod';
         schema: {
           title: z.string().describe("Article title"),
           body: z.string().describe("Article body content (HTML)"),
-          section_id: z.number().describe("Section ID where the article will be created"),
+          section_id: z.coerce.number().describe("Section ID where the article will be created"),
           locale: z.string().optional().describe("Article locale (e.g., 'en-us')"),
           draft: z.boolean().optional().describe("Whether the article is a draft"),
-          permission_group_id: z.number().optional().describe("Permission group ID for the article"),
-          user_segment_id: z.number().optional().describe("User segment ID for the article"),
+          permission_group_id: z.coerce.number().optional().describe("Permission group ID for the article"),
+          user_segment_id: z.coerce.number().optional().describe("User segment ID for the article"),
           label_names: z.array(z.string()).optional().describe("Labels for the article")
         },
         handler: async ({ title, body, section_id, locale, draft, permission_group_id, user_segment_id, label_names }) => {
@@ -96,13 +96,13 @@ import { z } from 'zod';
         name: "update_article",
         description: "Update an existing Help Center article",
         schema: {
-          id: z.number().describe("Article ID to update"),
+          id: z.coerce.number().describe("Article ID to update"),
           title: z.string().optional().describe("Updated article title"),
           body: z.string().optional().describe("Updated article body content (HTML)"),
           locale: z.string().optional().describe("Updated article locale (e.g., 'en-us')"),
           draft: z.boolean().optional().describe("Whether the article is a draft"),
-          permission_group_id: z.number().optional().describe("Updated permission group ID"),
-          user_segment_id: z.number().optional().describe("Updated user segment ID"),
+          permission_group_id: z.coerce.number().optional().describe("Updated permission group ID"),
+          user_segment_id: z.coerce.number().optional().describe("Updated user segment ID"),
           label_names: z.array(z.string()).optional().describe("Updated labels")
         },
         handler: async ({ id, title, body, locale, draft, permission_group_id, user_segment_id, label_names }) => {
@@ -136,7 +136,7 @@ import { z } from 'zod';
         name: "delete_article",
         description: "Delete a Help Center article",
         schema: {
-          id: z.number().describe("Article ID to delete")
+          id: z.coerce.number().describe("Article ID to delete")
         },
         handler: async ({ id }) => {
           try {

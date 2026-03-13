@@ -6,8 +6,8 @@ import { z } from 'zod';
         name: "list_groups",
         description: "List agent groups in Zendesk",
         schema: {
-          page: z.number().optional().describe("Page number for pagination"),
-          per_page: z.number().optional().describe("Number of groups per page (max 100)")
+          page: z.coerce.number().optional().describe("Page number for pagination"),
+          per_page: z.coerce.number().optional().describe("Number of groups per page (max 100)")
         },
         handler: async ({ page, per_page }) => {
           try {
@@ -31,7 +31,7 @@ import { z } from 'zod';
         name: "get_group",
         description: "Get a specific group by ID",
         schema: {
-          id: z.number().describe("Group ID")
+          id: z.coerce.number().describe("Group ID")
         },
         handler: async ({ id }) => {
           try {
@@ -83,7 +83,7 @@ import { z } from 'zod';
         name: "update_group",
         description: "Update an existing group",
         schema: {
-          id: z.number().describe("Group ID to update"),
+          id: z.coerce.number().describe("Group ID to update"),
           name: z.string().optional().describe("Updated group name"),
           description: z.string().optional().describe("Updated group description")
         },
@@ -113,7 +113,7 @@ import { z } from 'zod';
         name: "delete_group",
         description: "Delete a group",
         schema: {
-          id: z.number().describe("Group ID to delete")
+          id: z.coerce.number().describe("Group ID to delete")
         },
         handler: async ({ id }) => {
           try {
